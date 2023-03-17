@@ -3,24 +3,28 @@ package utils
 import "fmt"
 
 type FamilyAccount struct {
-	balance float64
-	money   float64
-	note    string
-	loop    bool
-	details string
-	flag    bool
-	key     string
+	balance  float64
+	money    float64
+	note     string
+	loop     bool
+	details  string
+	flag     bool
+	key      string
+	username string
+	pwd      string
 }
 
 func NewFamilyAccount() *FamilyAccount {
 	return &FamilyAccount{
-		balance: 10000.00,
-		money:   0.0,
-		note:    "",
-		loop:    true,
-		details: "收支\t账户余额\t收支金额\t 说 明",
-		flag:    false,
-		key:     "",
+		balance:  10000.00,
+		money:    0.0,
+		note:     "",
+		loop:     true,
+		details:  "收支\t账户余额\t收支金额\t 说 明",
+		flag:     false,
+		key:      "",
+		username: "",
+		pwd:      "",
 	}
 }
 
@@ -122,4 +126,30 @@ func (this *FamilyAccount) MainMenu() {
 		}
 	}
 	fmt.Println("退出家庭记账软件！")
+}
+
+func (this *FamilyAccount) Login() {
+	count := 5
+	islogin := false
+	for !islogin {
+		if count <= 0 {
+			fmt.Println("登录次数用尽，请稍后在尝试")
+			break
+		}
+		fmt.Println("----------------登录----------------")
+		fmt.Println("请输入用户名：")
+		fmt.Scanln(&this.username)
+		fmt.Println("请输入密码：")
+		fmt.Scanln(&this.pwd)
+		if this.username == "admin" && this.pwd == "123" && count > 0 {
+			fmt.Println("登录成功！")
+			islogin = true
+		} else {
+			count--
+			fmt.Printf("用户名和密码错误,剩余登录次数[%v]\n", count)
+		}
+	}
+	if islogin {
+		this.MainMenu()
+	}
 }

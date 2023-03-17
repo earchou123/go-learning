@@ -3,7 +3,7 @@ package main
 import "customermanage/utils"
 
 func main() {
-	utils.NewFamilyAccount().MainMenu()
+	utils.NewFamilyAccount().Login()
 }
 
 // --------------------------
