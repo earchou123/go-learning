@@ -18,7 +18,7 @@ func NewFamilyAccount() *FamilyAccount {
 		money:   0.0,
 		note:    "",
 		loop:    true,
-		details: "收支\t账户金额\t收支金额\t 说 明",
+		details: "收支\t账户余额\t收支金额\t 说 明",
 		flag:    false,
 		key:     "",
 	}
@@ -75,14 +75,26 @@ func (this *FamilyAccount) exit() {
 	}
 }
 
+func (this *FamilyAccount) transfer() {
+	fmt.Println("----------------转账----------------")
+	fmt.Println("请输入转账金额：")
+	fmt.Scanln(&this.money)
+	this.balance -= this.money
+	fmt.Println("输入转账对象：")
+	fmt.Scanln(&this.note)
+	this.details += fmt.Sprintf("\n转账\t%8v\t%8v\t%5v", this.balance, this.money, "转账给"+this.note)
+	this.flag = true
+}
+
 func (this *FamilyAccount) MainMenu() {
 	for {
 		fmt.Println("----------------家庭收支记账软件----------------")
 		fmt.Printf("%25s\n", "1 收支明细")
 		fmt.Printf("%25s\n", "2 登记收入")
 		fmt.Printf("%25s\n", "3 登记支出")
-		fmt.Printf("%25s\n", "4 退出软件")
-		fmt.Println("请选择（1-4）")
+		fmt.Printf("%23s\n", "4 转账")
+		fmt.Printf("%25s\n", "5 退出软件")
+		fmt.Println("请选择（1-5）")
 		fmt.Scanln(&this.key)
 
 		switch this.key {
@@ -94,6 +106,8 @@ func (this *FamilyAccount) MainMenu() {
 		case "3":
 			this.outcome()
 		case "4":
+			this.transfer()
+		case "5":
 			this.exit()
 		default:
 			fmt.Println("请输入正确的选项....")
