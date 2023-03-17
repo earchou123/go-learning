@@ -79,11 +79,15 @@ func (this *FamilyAccount) transfer() {
 	fmt.Println("----------------转账----------------")
 	fmt.Println("请输入转账金额：")
 	fmt.Scanln(&this.money)
-	this.balance -= this.money
-	fmt.Println("输入转账对象：")
-	fmt.Scanln(&this.note)
-	this.details += fmt.Sprintf("\n转账\t%8v\t%8v\t%5v", this.balance, this.money, "转账给"+this.note)
-	this.flag = true
+	if this.money > this.balance {
+		fmt.Println("余额不足！")
+	} else {
+		this.balance -= this.money
+		fmt.Println("输入转账对象：")
+		fmt.Scanln(&this.note)
+		this.details += fmt.Sprintf("\n转账\t%8v\t%8v\t%5v", this.balance, this.money, "转账给"+this.note)
+		this.flag = true
+	}
 }
 
 func (this *FamilyAccount) MainMenu() {
