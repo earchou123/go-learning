@@ -18,7 +18,7 @@ func NewFamilyAccount() *FamilyAccount {
 		money:   0.0,
 		note:    "",
 		loop:    true,
-		details: "收支\t账户金额\t收支金额\t说明",
+		details: "收支\t账户金额\t收支金额\t 说 明",
 		flag:    false,
 		key:     "",
 	}
@@ -40,7 +40,7 @@ func (this *FamilyAccount) income() {
 	this.balance += this.money
 	fmt.Println("本次收入说明：")
 	fmt.Scanln(&this.note)
-	this.details += fmt.Sprintf("\n收入\t%8v\t%8v\t%v", this.balance, this.money, this.note)
+	this.details += fmt.Sprintf("\n收入\t%8v\t%8v\t%5v", this.balance, this.money, this.note)
 	this.flag = true
 }
 
@@ -51,13 +51,13 @@ func (this *FamilyAccount) outcome() {
 	if this.money > this.balance {
 		fmt.Println("余额不足！")
 		// break
+	} else {
+		this.balance -= this.money
+		fmt.Println("本次支出说明：")
+		fmt.Scanln(&this.note)
+		this.details += fmt.Sprintf("\n支出\t%8v\t%8v\t%5v", this.balance, this.money, this.note)
+		this.flag = true
 	}
-
-	this.balance -= this.money
-	fmt.Println("本次支出说明：")
-	fmt.Scanln(&this.note)
-	this.details += fmt.Sprintf("\n支出\t%v\t-%v\t%v", this.balance, this.money, this.note)
-	this.flag = true
 }
 
 func (this *FamilyAccount) exit() {
