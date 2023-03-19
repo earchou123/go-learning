@@ -1,6 +1,6 @@
 package main
 
-import "customermanage/utils"
+import "familyaccount/utils"
 
 func main() {
 	utils.NewFamilyAccount().Login()
