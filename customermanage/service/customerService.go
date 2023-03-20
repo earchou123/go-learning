@@ -6,7 +6,7 @@ import (
 
 type CustomerService struct {
 	customers   []model.Customer
-	customerNum int
+	customerNum int //id
 }
 
 func NewCustomerService() *CustomerService {
@@ -17,7 +17,15 @@ func NewCustomerService() *CustomerService {
 	return customerService
 }
 
-//返回客户切片
+// 返回客户切片
 func (this *CustomerService) List() []model.Customer {
 	return this.customers
+}
+
+// 添客户到customers切片
+func (this *CustomerService) Add(customer model.Customer) bool {
+	this.customerNum++ // id增加
+	customer.Id = this.customerNum
+	this.customers = append(this.customers, customer)
+	return true
 }

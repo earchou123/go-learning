@@ -1,6 +1,7 @@
 package view
 
 import (
+	"customermanage/model"
 	"customermanage/service"
 	"fmt"
 )
@@ -17,6 +18,8 @@ func NewCustomerView(key string, loop bool) *CustomerView {
 		Loop: loop,
 	}
 }
+
+// 显示客户列表
 func (this *CustomerView) list() {
 	customers := this.CustomerService.List()
 	fmt.Println("------------------客户列表-----------------")
@@ -27,6 +30,34 @@ func (this *CustomerView) list() {
 	fmt.Println("------------------客户列表end-----------------")
 }
 
+// 添加客户
+func (this *CustomerView) add() {
+	fmt.Println("------------------添加客户-----------------")
+	fmt.Println("姓名：")
+	name := ""
+	fmt.Scanln(&name)
+	fmt.Println("性别：")
+	gender := ""
+	fmt.Scanln(&gender)
+	fmt.Println("年龄：")
+	age := 0
+	fmt.Scanln(&age)
+	fmt.Println("电话：")
+	phone := ""
+	fmt.Scanln(&phone)
+	fmt.Println("邮件：")
+	email := ""
+	fmt.Scanln(&email)
+	customer := model.NewCustomer2(name, gender, age, phone, email)
+
+	if this.CustomerService.Add(customer) {
+		fmt.Println("------------------添加完成-----------------")
+	} else {
+		fmt.Println("------------------添加失败-----------------")
+	}
+}
+
+// 菜单
 func (this *CustomerView) MainMenu() {
 	for this.Loop {
 		fmt.Println("------------------客户信息管理系统-----------------")
@@ -40,7 +71,7 @@ func (this *CustomerView) MainMenu() {
 		fmt.Scanln(&this.Key)
 		switch this.Key {
 		case "1":
-			fmt.Println("添加客户")
+			this.add()
 		case "2":
 			fmt.Println("修改客户")
 		case "3":
