@@ -33,19 +33,19 @@ func (this *CustomerView) list() {
 // 添加客户
 func (this *CustomerView) add() {
 	fmt.Println("------------------添加客户-----------------")
-	fmt.Println("姓名：")
+	fmt.Printf("姓名：")
 	name := ""
 	fmt.Scanln(&name)
-	fmt.Println("性别：")
+	fmt.Printf("性别：")
 	gender := ""
 	fmt.Scanln(&gender)
-	fmt.Println("年龄：")
+	fmt.Printf("年龄：")
 	age := 0
 	fmt.Scanln(&age)
-	fmt.Println("电话：")
+	fmt.Printf("电话：")
 	phone := ""
 	fmt.Scanln(&phone)
-	fmt.Println("邮件：")
+	fmt.Printf("邮件：")
 	email := ""
 	fmt.Scanln(&email)
 	customer := model.NewCustomer2(name, gender, age, phone, email)
@@ -66,7 +66,13 @@ func (this *CustomerView) delete() {
 	if id == -1 {
 		return // 放弃删除
 	}
+	customers := this.CustomerService.List()
+	fmt.Println("编号\t姓名\t性别\t年龄\t电话\t邮箱")
+	fmt.Println(customers[id-1].GetInfo())
+
+	fmt.Println("确定要删除吗？y/n")
 	choice := ""
+	fmt.Scanln(&choice)
 	if choice == "y" || choice == "Y" {
 		if this.CustomerService.Delete(id) {
 			fmt.Println("------------------删除完成-----------------")
@@ -75,10 +81,45 @@ func (this *CustomerView) delete() {
 		}
 	}
 
-	if this.CustomerService.Delete(id) {
-		fmt.Println("------------------删除完成-----------------")
+}
+
+// 编辑修改客户
+func (this *CustomerView) edit() {
+	fmt.Println("------------------修改客户-----------------")
+	fmt.Printf("请输入要修改的客户ID(-1退出)：")
+	id := -1
+	fmt.Scanln(&id)
+	if id == -1 {
+		return // 放弃修改
+	}
+	index := this.CustomerService.FindById(id)
+	if index == -1 {
+		fmt.Println("用户id不存在")
+		return
+	}
+	customer := &(this.CustomerService.List())[id-1]
+	fmt.Printf("姓名(%v)：<直接回车则不修改>", customer.Name)
+	name := ""
+	fmt.Scanln(&name)
+	fmt.Printf("性别(%v)：", customer.Gender)
+	gender := ""
+	fmt.Scanln(&gender)
+	fmt.Printf("年龄(%v)：", customer.Age)
+	age := 0
+	fmt.Scanln(&age)
+	fmt.Printf("电话(%v)：", customer.Phone)
+	phone := ""
+	fmt.Scanln(&phone)
+	fmt.Printf("邮件(%v)：", customer.Email)
+	email := ""
+	fmt.Scanln(&email)
+
+	if this.CustomerService.Edit(id, name, gender, age, phone, email) {
+		fmt.Println("\n编号\t姓名\t性别\t年龄\t电话\t邮箱")
+		fmt.Println(customer.GetInfo())
+		fmt.Println("------------------修改完成-----------------")
 	} else {
-		fmt.Println("------------------删除失败-----------------")
+		fmt.Println("------------------修改失败-----------------")
 	}
 }
 
@@ -99,6 +140,7 @@ func (this *CustomerView) MainMenu() {
 			this.add()
 		case "2":
 			fmt.Println("修改客户")
+			this.edit()
 		case "3":
 			this.delete()
 

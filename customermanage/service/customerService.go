@@ -56,3 +56,29 @@ func (this *CustomerService) FindById(id int) int {
 	}
 	return index
 }
+
+//  修改过客户
+func (this *CustomerService) Edit(id int, name string, gender string, age int, phone string, email string) bool {
+	index := this.FindById(id)
+	if index == -1 {
+		return false
+	}
+	customer := &this.customers[index]
+	// 如果不为0值则修改
+	if name != "" {
+		customer.Name = name
+	}
+	if age != 0 {
+		customer.Age = age
+	}
+	if gender != "" {
+		customer.Gender = gender
+	}
+	if email != "" {
+		customer.Email = email
+	}
+	if phone != "" {
+		customer.Phone = phone
+	}
+	return true
+}

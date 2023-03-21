@@ -35,6 +35,7 @@ func NewCustomer2(name string, gender string, age int, phone string, email strin
 
 // 返回单条 customer
 func (this *Customer) GetInfo() string {
-	info := fmt.Sprintf("%v\t%v\t%v\t%v\t%v\t%v\t", this.Id, this.Name, this.Age, this.Gender, this.Phone, this.Email)
+	info := fmt.Sprintf("%v\t%v\t%v\t%v\t%v\t%v\t", this.Id, this.Name, this.Gender, this.Age, this.Phone, this.Email)
+
 	return info
 }
