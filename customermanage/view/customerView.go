@@ -139,7 +139,6 @@ func (this *CustomerView) MainMenu() {
 		case "1":
 			this.add()
 		case "2":
-			fmt.Println("修改客户")
 			this.edit()
 		case "3":
 			this.delete()
