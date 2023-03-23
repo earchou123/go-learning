@@ -1,6 +1,8 @@
 package utils
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type FamilyAccount struct {
 	balance  float64 //余额
@@ -43,11 +45,16 @@ func (this *FamilyAccount) income() {
 	fmt.Println("----------------登记收入----------------")
 	fmt.Println("请输入本次收入金额：")
 	fmt.Scanln(&this.money)
-	this.balance += this.money
-	fmt.Println("本次收入说明：")
-	fmt.Scanln(&this.note)
-	this.details += fmt.Sprintf("\n收入\t%8v\t%8v\t%5v", this.balance, this.money, this.note)
-	this.flag = true
+	if this.money > 0 {
+		this.balance += this.money
+
+		fmt.Println("本次收入说明：")
+		fmt.Scanln(&this.note)
+		this.details += fmt.Sprintf("\n收入\t%8v\t%8v\t%5v", this.balance, this.money, this.note)
+		this.flag = true
+	} else {
+		fmt.Println("请输正确的金额（大于0）")
+	}
 }
 
 // 支出登记
@@ -58,6 +65,8 @@ func (this *FamilyAccount) outcome() {
 	if this.money > this.balance {
 		fmt.Println("余额不足！")
 		// break
+	} else if this.money < 0 {
+		fmt.Println("请输入正确金额（大于0）")
 	} else {
 		this.balance -= this.money
 		fmt.Println("本次支出说明：")
@@ -90,6 +99,8 @@ func (this *FamilyAccount) transfer() {
 	fmt.Scanln(&this.money)
 	if this.money > this.balance {
 		fmt.Println("余额不足！")
+	} else if this.money < 0 {
+		fmt.Println("请输入正确金额（大于0）")
 	} else {
 		this.balance -= this.money
 		fmt.Println("输入转账对象：")
@@ -135,7 +146,7 @@ func (this *FamilyAccount) MainMenu() {
 }
 
 // 登录
-func (this *FamilyAccount) Login() {
+func (this *FamilyAccount) Login() bool {
 	count := 5
 	islogin := false
 	for !islogin {
@@ -159,4 +170,5 @@ func (this *FamilyAccount) Login() {
 	if islogin {
 		this.MainMenu()
 	}
+	return islogin
 }
