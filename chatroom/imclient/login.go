@@ -54,7 +54,14 @@ func login(userId int, userPwd string) (err error) {
 		fmt.Printf("conn.Write err=%v\n", err)
 		return
 	}
-	fmt.Printf("客户端发送的消息长度=%d 内容=%v\n", len(data), string(data))
+	// fmt.Printf("客户端发送的消息长度=%d 内容=%v\n", len(data), string(data))
+	// 发送消息本身
+	n, err = conn.Write(data)
+	if n != int(pkgLen) || err != nil {
+		fmt.Printf("conn.Write err=%v\n", err)
+		return
+	}
+
 	return
 
 }
