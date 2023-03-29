@@ -61,6 +61,23 @@ func login(userId int, userPwd string) (err error) {
 		fmt.Printf("conn.Write err=%v\n", err)
 		return
 	}
+	mes, err = readPkg(conn)
+	if err != nil {
+		fmt.Printf("readPkg err=%v\n", err)
+		return
+	}
+	// 将mes的Data反序列化
+	var loginResMes message.LoginResMes
+	err = json.Unmarshal([]byte(mes.Data), &loginResMes)
+	if err != nil {
+		fmt.Printf("json.Unmarshal err=%v\n", err)
+		return
+	}
+	if loginResMes.Code == 200 {
+		fmt.Printf("登录成功\n")
+	} else if loginResMes.Code == 500 {
+		fmt.Printf("登录失败：%v\n", loginResMes.Error)
+	}
 
 	return
 

@@ -3,6 +3,7 @@ package message
 const (
 	LoginMesType    = "LoginMes"
 	LoginResMesType = "LoginResMes"
+	RegisterMesType = "RegisterMesType"
 )
 
 type Message struct {
@@ -21,4 +22,8 @@ type LoginMes struct {
 type LoginResMes struct {
 	Code  int    `json:"code"`
 	Error string `json:"error"`
+}
+
+type RegisterMes struct {
+	//
 }
