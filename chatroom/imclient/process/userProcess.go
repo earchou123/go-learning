@@ -1,14 +1,19 @@
-package main
+package process
 
 import (
 	"encoding/binary"
 	"encoding/json"
 	"fmt"
 	"go-learning/chatroom/common/message"
+	"go-learning/chatroom/imserver/utils"
 	"net"
 )
 
-func login(userId int, userPwd string) (err error) {
+type UserProcess struct {
+	//
+}
+
+func (this *UserProcess) Login(userId int, userPwd string) (err error) {
 	// 连接服务器
 	conn, err := net.Dial("tcp", "0.0.0.0:20000")
 	if err != nil {
@@ -61,7 +66,10 @@ func login(userId int, userPwd string) (err error) {
 		fmt.Printf("conn.Write err=%v\n", err)
 		return
 	}
-	mes, err = readPkg(conn)
+	tf := &utils.Transfer{
+		Conn: conn,
+	}
+	mes, err = tf.ReadPkg()
 	if err != nil {
 		fmt.Printf("readPkg err=%v\n", err)
 		return
@@ -75,6 +83,9 @@ func login(userId int, userPwd string) (err error) {
 	}
 	if loginResMes.Code == 200 {
 		fmt.Printf("登录成功\n")
+		go serverProcessMes(conn)
+		ShowMenu()
+
 	} else if loginResMes.Code == 500 {
 		fmt.Printf("登录失败：%v\n", loginResMes.Error)
 	}

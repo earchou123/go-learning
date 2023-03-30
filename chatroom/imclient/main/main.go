@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"go-learning/chatroom/imclient/process"
 	"os"
 )
 
@@ -24,10 +25,16 @@ func main() {
 		switch key {
 		case 1:
 			fmt.Println("登录")
-			loop = false
+			fmt.Println("请输入用户id")
+			fmt.Scanf("%d\n", &userId)
+			fmt.Println("请输入用户密码")
+			fmt.Scanf("%s\n", &userPwd)
+			up := &process.UserProcess{}
+			up.Login(userId, userPwd)
+			// loop = false
 		case 2:
 			fmt.Println("注册")
-			loop = true
+			// loop = true
 		case 3:
 			fmt.Println("退出")
 			os.Exit(0)
@@ -36,15 +43,4 @@ func main() {
 		}
 	}
 
-	if key == 1 {
-		fmt.Println("请输入用户id")
-		fmt.Scanf("%d\n", &userId)
-		fmt.Println("请输入用户密码")
-		fmt.Scanf("%s\n", &userPwd)
-
-		login(userId, userPwd)
-
-	} else if key == 2 {
-		fmt.Println("进入注册逻辑")
-	}
 }
