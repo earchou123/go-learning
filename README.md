@@ -1,3 +1,9 @@
+<!-- TOC -->
+- [familyaccount 家庭收支记账软件](#familyaccount-%E5%AE%B6%E5%BA%AD%E6%94%B6%E6%94%AF%E8%AE%B0%E8%B4%A6%E8%BD%AF%E4%BB%B6)
+- [customermanage 客户信息管理系统软件](#customermanage-%E5%AE%A2%E6%88%B7%E4%BF%A1%E6%81%AF%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E8%BD%AF%E4%BB%B6)
+- [chatroom 多人聊天系统](#chatroom-%E5%A4%9A%E4%BA%BA%E8%81%8A%E5%A4%A9%E7%B3%BB%E7%BB%9F)
+
+<!-- /TOC -->
 *go学习写的一些代码。不值得一看。*
 ## [familyaccount](./familyaccount/) 家庭收支记账软件
 1. 模拟实现基于文本界面的《家庭记账软件》
