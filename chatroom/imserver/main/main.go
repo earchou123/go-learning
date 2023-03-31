@@ -2,7 +2,10 @@ package main
 
 import (
 	"fmt"
+	"go-learning/chatroom/imserver/model"
 	"net"
+
+	"github.com/redis/go-redis/v9"
 )
 
 func process(conn net.Conn) {
@@ -16,7 +19,15 @@ func process(conn net.Conn) {
 		return
 	}
 }
+
+func initUserDao(client *redis.Client) {
+	model.MyUserDao = model.NewUserDao(client)
+}
 func main() {
+	fmt.Println("初始化redis")
+	client := initRedis("127.0.0.1:9999")
+	initUserDao(client)
+
 	fmt.Println("服务器在监听20000端口")
 	listen, err := net.Listen("tcp", "0.0.0.0:20000")
 	defer listen.Close()

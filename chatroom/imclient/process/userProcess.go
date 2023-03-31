@@ -85,7 +85,7 @@ func (this *UserProcess) Login(userId int, userPwd string) (err error) {
 		fmt.Printf("登录成功\n")
 		go serverProcessMes(conn)
 		ShowMenu()
-
+		// {"userId":1,"userPwd":"123","username":""}
 	} else if loginResMes.Code == 500 {
 		fmt.Printf("登录失败：%v\n", loginResMes.Error)
 	}

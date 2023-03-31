@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"go-learning/chatroom/common/message"
+	"go-learning/chatroom/imserver/model"
 	"go-learning/chatroom/imserver/utils"
 	"net"
 )
@@ -28,14 +29,32 @@ func (this *UserProcess) ServerProcessLogin(mes *message.Message) (err error) {
 
 	var loginResMes message.LoginResMes
 
-	// 判断用户id和密码
-	if loginMes.UserId == 1 && loginMes.UserPwd == "123" {
-		loginResMes.Code = 200
+	user, err := model.MyUserDao.Login(loginMes.UserId, loginMes.UserPwd)
 
+	if err != nil {
+		if err == model.ERROR_USER_NOTEXISTS {
+			loginResMes.Code = 500
+			loginResMes.Error = err.Error()
+		} else if err == model.ERROR_USER_PWD {
+			loginResMes.Code = 403
+			loginResMes.Error = err.Error()
+		} else {
+			loginResMes.Code = 505
+			loginResMes.Error = "服务器内部错误。。"
+		}
 	} else {
-		loginResMes.Code = 500
-		loginResMes.Error = "用户不存在，请注册再使用"
+		loginResMes.Code = 200
+		fmt.Printf("user=%v\t 登录成功\n", user)
 	}
+
+	// // 判断用户id和密码
+	// if loginMes.UserId == 1 && loginMes.UserPwd == "123" {
+	// 	loginResMes.Code = 200
+
+	// } else {
+	// 	loginResMes.Code = 500
+	// 	loginResMes.Error = "用户不存在，请注册再使用"
+	// }
 
 	// 序列化loginResMes
 	data, err := json.Marshal(loginResMes)
