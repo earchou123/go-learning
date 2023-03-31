@@ -12,6 +12,85 @@ import (
 type UserProcess struct {
 	//
 }
+//注册
+func (this *UserProcess) Register(userId int, userName string, userPwd string) (err error) {
+	// 连接服务器
+	conn, err := net.Dial("tcp", "0.0.0.0:20000")
+	if err != nil {
+		fmt.Println("net.Dial err=%v\n", err)
+		return
+	}
+	// 延时关闭
+	defer conn.Close()
+
+	var mes message.Message
+	mes.Type = message.RegisterMesType
+
+	var registerMes message.RegisterMes
+	registerMes.User.UserId = userId
+	registerMes.User.UserPwd = userPwd
+	registerMes.User.UserName = userName
+
+	// 将RregisterMes序列化
+	data, err := json.Marshal(registerMes)
+	if err != nil {
+		fmt.Println("json.Marshal err=%v", err)
+		return
+	}
+	// 将data赋值给mes.Data
+	mes.Data = string(data)
+
+	// 将mes序列化
+	data, err = json.Marshal(mes)
+	if err != nil {
+		fmt.Println("json.Marshal err=%v", err)
+		return
+	}
+
+	// -----发消息-------
+	// 定义消息长度
+	var pkgLen uint32
+	pkgLen = uint32(len(data))
+	var buf [4]byte
+	// 将消息长度在转成字节
+	binary.BigEndian.PutUint32(buf[:4], pkgLen)
+	// 发送消息长度
+	n, err := conn.Write(buf[:4])
+	if n != 4 || err != nil {
+		fmt.Printf("conn.Write err=%v\n", err)
+		return
+	}
+	// fmt.Printf("客户端发送的消息长度=%d 内容=%v\n", len(data), string(data))
+	// 发送消息本身
+	n, err = conn.Write(data)
+	if n != int(pkgLen) || err != nil {
+		fmt.Printf("conn.Write err=%v\n", err)
+		return
+	}
+	// 读取服务器返回的消息
+	tf := &utils.Transfer{
+		Conn: conn,
+	}
+	mes, err = tf.ReadPkg()
+	if err != nil {
+		fmt.Printf("readPkg err=%v\n", err)
+		return
+	}
+	// 将mes的Data反序列化
+	var registerResMes message.RegisterResMes
+	err = json.Unmarshal([]byte(mes.Data), &registerResMes)
+	if err != nil {
+		fmt.Printf("json.Unmarshal err=%v\n", err)
+		return
+	}
+	if registerResMes.Code == 200 {
+		fmt.Printf("注册成功，请重新登录\n")
+		//
+	} else {
+		fmt.Printf("注册失败：%v\n", registerResMes.Error)
+	}
+	return
+}
 
 func (this *UserProcess) Login(userId int, userPwd string) (err error) {
 	// 连接服务器
@@ -86,7 +165,7 @@ func (this *UserProcess) Login(userId int, userPwd string) (err error) {
 		go serverProcessMes(conn)
 		ShowMenu()
 		// {"userId":1,"userPwd":"123","username":""}
-	} else if loginResMes.Code == 500 {
+	} else {
 		fmt.Printf("登录失败：%v\n", loginResMes.Error)
 	}
 

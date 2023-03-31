@@ -8,6 +8,7 @@ import (
 
 var userId int
 var userPwd string
+var userName string
 
 func main() {
 	// Login(1, "123")
@@ -34,7 +35,15 @@ func main() {
 			// loop = false
 		case 2:
 			fmt.Println("注册")
+			fmt.Println("请输入用户id")
+			fmt.Scanf("%d\n", &userId)
+			fmt.Println("请输入用户名")
+			fmt.Scanf("%s\n", &userName)
+			fmt.Println("请输入用户密码")
+			fmt.Scanf("%s\n", &userPwd)
 			// loop = true
+			up := &process.UserProcess{}
+			up.Register(userId, userName, userPwd)
 		case 3:
 			fmt.Println("退出")
 			os.Exit(0)

@@ -25,7 +25,7 @@ func initUserDao(client *redis.Client) {
 }
 func main() {
 	fmt.Println("初始化redis")
-	client := initRedis("127.0.0.1:9999")
+	client := initRedis("127.0.0.1:6379")
 	initUserDao(client)
 
 	fmt.Println("服务器在监听20000端口")
