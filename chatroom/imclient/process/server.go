@@ -1,15 +1,17 @@
 package process
 
 import (
+	"encoding/json"
 	"fmt"
+	"go-learning/chatroom/common/message"
 	"go-learning/chatroom/imserver/utils"
 	"net"
 )
 
-func ShowMenu() {
+func ShowMenu(loginMes *message.LoginResMes) {
 	loop := true
 	for loop {
-		fmt.Println("------------恭喜XXX登录成功------------")
+		fmt.Printf("------------恭喜%v[ID:%d]登录成功------------\n",loginMes.UserName,loginMes.UserId)
 		fmt.Printf("%20v\n", "1 显示在线用户列表")
 		fmt.Printf("%20v\n", "2 发送消息")
 		fmt.Printf("%20v\n", "3 信息列表")
@@ -21,7 +23,7 @@ func ShowMenu() {
 
 		switch key {
 		case 1:
-			fmt.Println("显示在线用户列表")
+			outputOnlineUser()
 		case 2:
 			fmt.Println("发送消息")
 		case 3:
@@ -47,6 +49,15 @@ func serverProcessMes(conn net.Conn) {
 			fmt.Printf("ReadPkg err=%v\n", err)
 			return
 		}
-		fmt.Printf("mess=%v\n", mes)
+		switch mes.Type {
+		case message.NotifyUserStatusMesType:
+			var notifyUserStatusMes message.NotifyUserStatusMes
+			json.Unmarshal([]byte(mes.Data),&notifyUserStatusMes)
+			//更新用户状态
+			updataUserStatus(&notifyUserStatusMes)
+		default:
+			fmt.Println("服务器返回了客户端无法识别的消息类型。")
+		}
+		//fmt.Printf("mess=%v\n", mes)
 	}
 }

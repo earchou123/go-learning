@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"go-learning/chatroom/imserver/model"
+	"io"
 	"net"
 
 	"github.com/redis/go-redis/v9"
@@ -15,8 +16,10 @@ func process(conn net.Conn) {
 	}
 	err := processor.process2()
 	if err != nil {
-		fmt.Printf("客户端和服务器的通讯协程错误 err=%v\n", err)
-		return
+		if err != io.EOF {
+			fmt.Printf("客户端和服务器的通讯协程错误 err=%v\n", err)
+			return
+		}
 	}
 }
 

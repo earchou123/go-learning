@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"go-learning/chatroom/common/message"
+	"io"
 	"net"
 )
 
@@ -18,8 +19,10 @@ func (this *Transfer) ReadPkg() (mes message.Message, err error) {
 	buf := make([]byte, 8096)
 	_, err = this.Conn.Read(buf[:4])
 	if err != nil {
-		fmt.Println("conn.Read err=", err)
-		return
+		if err != io.EOF {
+			fmt.Println("conn.Read err=", err)
+			return
+		}
 	}
 
 	var pkgLen uint32
@@ -27,7 +30,9 @@ func (this *Transfer) ReadPkg() (mes message.Message, err error) {
 
 	n, err := this.Conn.Read(buf[:pkgLen])
 	if n != int(pkgLen) || err != nil {
-		fmt.Printf("conn.Read fail err=%v\n", err)
+		if err != io.EOF {
+			fmt.Printf("conn.Read fail err=%v\n", err)
+		}
 
 	}
 

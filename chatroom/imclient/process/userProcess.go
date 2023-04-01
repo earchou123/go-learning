@@ -161,10 +161,26 @@ func (this *UserProcess) Login(userId int, userPwd string) (err error) {
 		return
 	}
 	if loginResMes.Code == 200 {
-		fmt.Printf("登录成功\n")
+		// 展示在线用户列表，遍历loginResMes.UsersId
+		fmt.Printf("------------当前在线用户列表------------\n")
+		for _,v := range loginResMes.UsersId{
+			fmt.Printf("ID：%v\n",v)
+
+			//客户端在线用户初始化
+			user := &message.User{
+				UserId: v,
+				UserStatus: message.UserOnline,
+			}
+			onlineUsers[v] = user
+		}
+		fmt.Printf("------------end------------\n")
+
+		//接收服务端发送的消息
 		go serverProcessMes(conn)
-		ShowMenu()
-		// {"userId":1,"userPwd":"123","username":""}
+
+		//显示菜单
+		ShowMenu(&loginResMes)
+
 	} else {
 		fmt.Printf("登录失败：%v\n", loginResMes.Error)
 	}
