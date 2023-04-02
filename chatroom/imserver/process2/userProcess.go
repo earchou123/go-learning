@@ -72,7 +72,7 @@ func (this *UserProcess) ServerProcessRegister(mes *message.Message) (err error)
 
 	// 声明一个Mes作为返回消息
 	var resMes message.Message
-	resMes.Type = message.LoginResMesType
+	resMes.Type = message.RegisterResMesType
 
 	var registerResMes message.RegisterResMes
 

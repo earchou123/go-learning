@@ -29,7 +29,7 @@ func (this *Processor) serverProcessMes(mes *message.Message) (err error) {
 		}
 		err = up.ServerProcessRegister(mes)
 	default:
-		fmt.Println("消息类型不存在")
+		fmt.Printf("消息类型不存在,mes=%v\n",mes)
 	}
 	return
 }

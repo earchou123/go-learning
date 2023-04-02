@@ -3,9 +3,11 @@ package process
 import (
 	"fmt"
 	"go-learning/chatroom/common/message"
+	"go-learning/chatroom/imclient/model"
 )
 
 var onlineUsers map[int]*message.User = make(map[int]*message.User,10)
+var CurUser model.CurUser
 
 func outputOnlineUser(){
 	fmt.Printf("------------当前在线用户列表------------\n")

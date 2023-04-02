@@ -21,11 +21,15 @@ func ShowMenu(loginMes *message.LoginResMes) {
 		var key int
 		fmt.Scanf("%d\n", &key)
 
+		var content string
 		switch key {
 		case 1:
 			outputOnlineUser()
 		case 2:
 			fmt.Println("发送消息")
+			fmt.Scanf("%v\n",&content)
+			var smsProcess SmsProcess
+			_ = smsProcess.SendGroupMes(content)
 		case 3:
 			fmt.Println("信息列表")
 		case 4:

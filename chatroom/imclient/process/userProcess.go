@@ -12,6 +12,7 @@ import (
 type UserProcess struct {
 	//
 }
+
 //注册
 func (this *UserProcess) Register(userId int, userName string, userPwd string) (err error) {
 	// 连接服务器
@@ -161,6 +162,10 @@ func (this *UserProcess) Login(userId int, userPwd string) (err error) {
 		return
 	}
 	if loginResMes.Code == 200 {
+		//CurUser初始化
+		CurUser.Conn = conn
+		CurUser.UserId = userId
+		CurUser.UserStatus = message.UserOnline
 		// 展示在线用户列表，遍历loginResMes.UsersId
 		fmt.Printf("------------当前在线用户列表------------\n")
 		for _,v := range loginResMes.UsersId{
