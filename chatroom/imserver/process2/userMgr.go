@@ -8,28 +8,33 @@ type UserMgr struct {
 	onlineUsers map[int]*UserProcess
 }
 
-func init(){
+//初始化在线用户列表
+func init() {
 	userMgr = &UserMgr{
-		onlineUsers : make(map[int]*UserProcess),
+		onlineUsers: make(map[int]*UserProcess),
 	}
 }
 
-func (this *UserMgr)AddOnlineUser(up *UserProcess){
+//添加在线用户
+func (this *UserMgr) AddOnlineUser(up *UserProcess) {
 	this.onlineUsers[up.UserId] = up
 }
 
-func (this *UserMgr)DeleteOnlineUser(userId int){
-	delete(this.onlineUsers,userId)
+//删除在线用户
+func (this *UserMgr) DeleteOnlineUser(userId int) {
+	delete(this.onlineUsers, userId)
 }
 
-func (this *UserMgr)GetOnlineUser()map[int]*UserProcess{
+//查询在线用户列表
+func (this *UserMgr) GetOnlineUser() map[int]*UserProcess {
 	return this.onlineUsers
 }
 
-func (this *UserMgr)GetOnlineUserById(userId int)(up *UserProcess,err error){
-	up,ok := this.onlineUsers[userId]
-	if !ok{
-		err = fmt.Errorf("用户%不存在\n",userId)
+//通过id查询用户
+func (this *UserMgr) GetOnlineUserById(userId int) (up *UserProcess, err error) {
+	up, ok := this.onlineUsers[userId]
+	if !ok {
+		err = fmt.Errorf("用户%不存在\n", userId)
 		return
 	}
 	return

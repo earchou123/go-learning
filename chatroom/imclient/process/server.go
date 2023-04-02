@@ -11,7 +11,7 @@ import (
 func ShowMenu(loginMes *message.LoginResMes) {
 	loop := true
 	for loop {
-		fmt.Printf("------------恭喜%v[ID:%d]登录成功------------\n",loginMes.UserName,loginMes.UserId)
+		fmt.Printf("------------恭喜%v[ID:%d]登录成功------------\n", loginMes.UserName, loginMes.UserId)
 		fmt.Printf("%20v\n", "1 显示在线用户列表")
 		fmt.Printf("%20v\n", "2 发送消息")
 		fmt.Printf("%20v\n", "3 信息列表")
@@ -27,7 +27,7 @@ func ShowMenu(loginMes *message.LoginResMes) {
 			outputOnlineUser()
 		case 2:
 			fmt.Println("发送消息")
-			fmt.Scanf("%v\n",&content)
+			fmt.Scanf("%v\n", &content)
 			var smsProcess SmsProcess
 			_ = smsProcess.SendGroupMes(content)
 		case 3:
@@ -56,11 +56,13 @@ func serverProcessMes(conn net.Conn) {
 		switch mes.Type {
 		case message.NotifyUserStatusMesType:
 			var notifyUserStatusMes message.NotifyUserStatusMes
-			json.Unmarshal([]byte(mes.Data),&notifyUserStatusMes)
+			json.Unmarshal([]byte(mes.Data), &notifyUserStatusMes)
 			//更新用户状态
 			updataUserStatus(&notifyUserStatusMes)
+		case message.SmsMesType:
+			outputGroupMes(&mes)
 		default:
-			fmt.Println("服务器返回了客户端无法识别的消息类型。")
+			fmt.Printf("服务器返回了客户端无法识别的消息类型。\nmes=%v\n", mes)
 		}
 		//fmt.Printf("mess=%v\n", mes)
 	}

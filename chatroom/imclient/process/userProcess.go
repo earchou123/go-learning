@@ -168,12 +168,12 @@ func (this *UserProcess) Login(userId int, userPwd string) (err error) {
 		CurUser.UserStatus = message.UserOnline
 		// 展示在线用户列表，遍历loginResMes.UsersId
 		fmt.Printf("------------当前在线用户列表------------\n")
-		for _,v := range loginResMes.UsersId{
-			fmt.Printf("ID：%v\n",v)
+		for _, v := range loginResMes.UsersId {
+			fmt.Printf("ID：%v\n", v)
 
 			//客户端在线用户初始化
 			user := &message.User{
-				UserId: v,
+				UserId:     v,
 				UserStatus: message.UserOnline,
 			}
 			onlineUsers[v] = user

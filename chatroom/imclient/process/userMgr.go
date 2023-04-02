@@ -6,25 +6,28 @@ import (
 	"go-learning/chatroom/imclient/model"
 )
 
-var onlineUsers map[int]*message.User = make(map[int]*message.User,10)
+var onlineUsers = make(map[int]*message.User, 10)
 var CurUser model.CurUser
 
-func outputOnlineUser(){
+//打印在线用户列表
+func outputOnlineUser() {
 	fmt.Printf("------------当前在线用户列表------------\n")
-	for id,_ := range onlineUsers{
-		fmt.Printf("ID:%d\n",id)
+	for id := range onlineUsers {
+		fmt.Printf("ID:%d\n", id)
 	}
 	fmt.Printf("------------end------------\n")
 }
 
-func updataUserStatus(notifyUserStatusMes *message.NotifyUserStatusMes){
-	user,ok := onlineUsers[notifyUserStatusMes.UserId]
-	if !ok{
+//更新在线状态
+func updataUserStatus(notifyUserStatusMes *message.NotifyUserStatusMes) {
+	user, ok := onlineUsers[notifyUserStatusMes.UserId]
+	if !ok {
 		user = &message.User{
-			UserId:notifyUserStatusMes.UserId,
+			UserId: notifyUserStatusMes.UserId,
 		}
 	}
 	user.UserStatus = notifyUserStatusMes.Status
 	onlineUsers[notifyUserStatusMes.UserId] = user
+	//打印在线列表
 	outputOnlineUser()
 }
