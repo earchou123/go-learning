@@ -3,9 +3,9 @@ package main
 import "fmt"
 
 type ValNode struct {
-	row int         // 行
-	col int         // 列
-	val interface{} // 值
+	row int // 行
+	col int // 列
+	val int // 值
 }
 
 func main() {
