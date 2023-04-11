@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type Node struct {
 	no   int
@@ -52,6 +54,27 @@ func InsertNodeByNo(head *Node, node *Node) {
 	}
 }
 
+func DelNode(head *Node, no int) {
+	// 通过no删除节点
+	tmpNode := head
+	flag := false
+	for {
+		if tmpNode.next == nil { // 找到了队尾
+			break
+		} else if tmpNode.next.no == no { //找到了
+			flag = true
+			break
+		}
+		tmpNode = tmpNode.next
+	}
+	if flag {
+		tmpNode.next = tmpNode.next.next
+	} else {
+		fmt.Printf("没找到no[%v]\n", no)
+	}
+
+}
+
 func main() {
 	node := Node{}
 	node1 := Node{
@@ -78,8 +101,15 @@ func main() {
 	InsertNode(&node, &node2)
 	InsertNode(&node, &node4)
 	ListLink(&node)
+	fmt.Println("")
 
 	InsertNodeByNo(&node, &node3)
 	InsertNodeByNo(&node, &node5)
+	ListLink(&node)
+	fmt.Println("")
+
+	// 删除节点
+	fmt.Println("delete node3")
+	DelNode(&node, 3)
 	ListLink(&node)
 }
