@@ -7,6 +7,7 @@ import (
 type Node struct {
 	no   int
 	data string
+	pre  *Node
 	next *Node
 }
 
@@ -17,10 +18,36 @@ func ListLink(head *Node) {
 		fmt.Println("Empty list")
 		return
 	}
+
 	for {
-		fmt.Printf("%v[%v] => ", tmpNode.next.no, tmpNode.next.data)
+		fmt.Printf("%v[%v] <=> ", tmpNode.next.no, tmpNode.next.data)
 		tmpNode = tmpNode.next
 		if tmpNode.next == nil {
+			break
+		}
+
+	}
+}
+
+func ListLinkReverse(head *Node) {
+	tmpNode := head
+	// 判断是否为空列表
+	if tmpNode.next == nil {
+		fmt.Println("Empty list")
+		return
+	}
+	// 使tmpNode为最后一个节点
+	for {
+		tmpNode = tmpNode.next
+		if tmpNode.next == nil {
+			break
+		}
+	}
+	// 逆序遍历
+	for {
+		fmt.Printf("%v[%v] <=> ", tmpNode.no, tmpNode.data)
+		tmpNode = tmpNode.pre
+		if tmpNode.pre == nil {
 			break
 		}
 	}
@@ -28,6 +55,7 @@ func ListLink(head *Node) {
 
 func InsertNode(head *Node, node *Node) {
 	tmpNode := head
+
 	for {
 		if tmpNode.next == nil { //找到队尾，跳出循环
 			break
@@ -35,6 +63,7 @@ func InsertNode(head *Node, node *Node) {
 		tmpNode = tmpNode.next
 	}
 	tmpNode.next = node
+	node.pre = tmpNode
 }
 
 func InsertNodeByNo(head *Node, node *Node) {
@@ -53,6 +82,10 @@ func InsertNodeByNo(head *Node, node *Node) {
 	}
 	if flag {
 		node.next = tmpNode.next
+		node.pre = tmpNode
+		if tmpNode.next != nil { // tmpNode.next不为nil时，添加pre指针
+			tmpNode.next.pre = node
+		}
 		tmpNode.next = node
 	} else {
 		fmt.Printf("node.no[%d] 已存在\n", node.no)
@@ -63,6 +96,12 @@ func DelNode(head *Node, no int) {
 	// 通过no删除节点
 	tmpNode := head
 	flag := false
+
+	// 判断是否为空列表
+	if tmpNode.next == nil {
+		fmt.Println("Empty list")
+		return
+	}
 	for {
 		if tmpNode.next == nil { // 找到了队尾
 			break
@@ -74,6 +113,9 @@ func DelNode(head *Node, no int) {
 	}
 	if flag {
 		tmpNode.next = tmpNode.next.next
+		if tmpNode.next != nil {
+			tmpNode.next.pre = tmpNode
+		}
 	} else {
 		fmt.Printf("没找到no[%v]\n", no)
 	}
@@ -102,6 +144,7 @@ func main() {
 		no:   3,
 		data: "node5",
 	}
+
 	InsertNode(&node, &node1)
 	InsertNode(&node, &node2)
 	InsertNode(&node, &node4)
@@ -113,8 +156,12 @@ func main() {
 	ListLink(&node)
 	fmt.Println("")
 
+	ListLinkReverse(&node)
+	fmt.Println("")
+
 	// 删除节点
-	fmt.Println("delete node3")
 	DelNode(&node, 3)
+	DelNode(&node, 999)
 	ListLink(&node)
+
 }
