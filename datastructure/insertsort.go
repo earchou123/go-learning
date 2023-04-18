@@ -16,7 +16,7 @@ func InsertSort(arr []int) {
 		if insertIndex+1 != i { // 如果index+1 = i，插入的数据已有序，不需要再插入
 			arr[insertIndex+1] = insertVal
 		}
-		fmt.Printf("[%d] : %v \n", i, arr)
+		fmt.Printf("第[%d]躺排序 : %v \n", i, arr)
 	}
 }
 

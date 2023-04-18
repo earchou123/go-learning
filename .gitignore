@@ -9,3 +9,4 @@ chatroom/imserver/server
 chatroom/imclient/client
 chatroom/imserver/main/main
 .idea
+.vscode/launch.json
